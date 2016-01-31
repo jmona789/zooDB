@@ -28,10 +28,10 @@ var zoo ={
   },
   add: function(input_scope){
     var currentScope = input_scope;
-    console.log("To add an animal to the zoo please fill out the following form for us!");
+    console.log("To add an animal to the zoo please fill out the following form for us!(When entering name and type please put quotation marks around them)");
     prompt.get(["->", "caretaker_id", "name", "type", "age"], function(err, result){
       var newEntryName = result.name;
-      var query = "INSERT INTO animals(caretaker_id, name, type, age) VALUES ("+ result.caretaker_id + ", '"+ result.name +"', '"+ result.type+ "' ,"+ result.age+");";
+      var query = "INSERT INTO animals(caretaker_id, name, type, age) VALUES ("+ result.caretaker_id + ", "+ result.name +", "+ result.type+ " ,"+ result.age+");";
       connection.query(query, function(err, result){
         if (err) throw err;
         console.log(newEntryName + " successfully added to database.");
@@ -122,12 +122,16 @@ var zoo ={
   },
   update: function(input_scope){
     var currentScope = input_scope;
-    prompt.get(["->", "id", "new_name", "new_age", "new_type", "new_caretaker_id"], function(err, result){
-      connection.query("UPDATE animals SET name=" + result.new_name + ", age =" + result.new_age + ", type=" + result.new_type + ", care_taker_id=" + result.new_caretaker_id + 
-        "WHERE id=" + result.id + ";")
+    console.log("Fill of the following form to update an animals info by ID( When entering new name and new type please put quotation marks around them)")
+    prompt.get(["->", "id", "new_name", "new_age", "new_type", "new_caretaker_id"],function(err, result){
+      var query = "UPDATE animals SET name=" + result.new_name + ", age =" + result.new_age + ", type=" + result.new_type + ", caretaker_id=" + result.new_caretaker_id + " WHERE id=" + result.id + ";";
+      connection.query(query, function(err, result){
+        if (err) throw err;
+        console.log("Animal info successfully updated");
+        currentScope.menu();
+        currentScope.promptUser();
+      });
     });
-    currentScope.menu();
-    currentScope.promptUser();
   },
   adopt: function(input_scope){
     var currentScope = input_scope;
