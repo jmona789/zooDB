@@ -29,7 +29,7 @@ var zoo ={
   add: function(input_scope){
     var currentScope = input_scope;
     console.log("To add an animal to the zoo please fill out the following form for us!(When entering name and type please put quotation marks around them)");
-    prompt.get(["->", "caretaker_id", "name", "type", "age"], function(err, result){
+    prompt.get(["caretaker_id", "name", "type", "age"], function(err, result){
       var newEntryName = result.name;
       var query = "INSERT INTO animals(caretaker_id, name, type, age) VALUES ("+ result.caretaker_id + ", "+ result.name +", "+ result.type+ " ,"+ result.age+");";
       connection.query(query, function(err, result){
@@ -41,6 +41,7 @@ var zoo ={
     });
   },
   visit: function(){
+    console.log("Please choose an option from the following menu \n");
     console.log("Enter (I): ------> do you know the animal by it’s id? We will visit that animal!\n");
     console.log("Enter (N): ------> do you know the animal by it’s name? We will visit that animal!\n");
     console.log("Enter (A): ------> here’s the count for all animals in all locations! \n");
@@ -51,20 +52,19 @@ var zoo ={
   },
   view: function(input_scope){
     var currentScope = input_scope;
-    console.log("Please choose what you like to visit!");
-    prompt.get(["->", "visit"], function(err, result){
-      if (result.visit === "Q"){
+    prompt.get(["input"], function(err, result){
+      if (result.input === "Q"){
         currentScope.menu();
         currentScope.promptUser();
-      }else if(result.visit ==="O"){
+      }else if(result.input ==="O"){
         currentScope.type(input_scope);
-      }else if(result.visit ==="I"){
+      }else if(result.input ==="I"){
         currentScope.animId(input_scope);
-      }else if(result.visit ==="N"){
+      }else if(result.input ==="N"){
         currentScope.name(input_scope);
-      }else if(result.visit ==="A"){
+      }else if(result.input ==="A"){
         currentScope.all(input_scope);
-      }else if(result.visit ==="C"){
+      }else if(result.input ==="C"){
         currentScope.care(input_scope);
       }else{
         console.log("Sorry didn't get that, come again?");
@@ -96,7 +96,7 @@ var zoo ={
   animId: function(input_scope){
     var currentScope = input_scope;
     console.log("Enter ID of the animal you want to visit.");
-    prompt.get(["->", "animal_id"], function(err, result){
+    prompt.get(["animal_id"], function(err, result){
       connection.query("SELECT * FROM animals WHERE id =" +result.animal_id + ";", function(err, result){
         if (err) throw err;
         //console.log("Animal Name: "+ result[0].name)
@@ -108,7 +108,7 @@ var zoo ={
   name: function(input_scope){
     var currentScope = input_scope;
     console.log("Enter name of the animal you want to visit.");
-    prompt.get(["->", "animal_name"], function(err, result){
+    prompt.get(["animal_name"], function(err, result){
       connection.query("SELECT * FROM animals WHERE name =" +result.animal_name + ";");
     });
     currentScope.visit();
@@ -123,7 +123,7 @@ var zoo ={
   update: function(input_scope){
     var currentScope = input_scope;
     console.log("Fill of the following form to update an animals info by ID( When entering new name and new type please put quotation marks around them)")
-    prompt.get(["->", "id", "new_name", "new_age", "new_type", "new_caretaker_id"],function(err, result){
+    prompt.get(["id", "new_name", "new_age", "new_type", "new_caretaker_id"],function(err, result){
       var query = "UPDATE animals SET name=" + result.new_name + ", age =" + result.new_age + ", type=" + result.new_type + ", caretaker_id=" + result.new_caretaker_id + " WHERE id=" + result.id + ";";
       connection.query(query, function(err, result){
         if (err) throw err;
@@ -135,7 +135,7 @@ var zoo ={
   },
   adopt: function(input_scope){
     var currentScope = input_scope;
-    prompt.get(["->","animal_id"], function(err, result){
+    prompt.get(["animal_id"], function(err, result){
       connection.query("DELETE FROM animals WHERE id="+ result.animal_id +";");
     });
     currentScope.visit();
