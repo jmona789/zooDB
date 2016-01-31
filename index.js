@@ -107,12 +107,15 @@ var zoo ={
   },
   name: function(input_scope){
     var currentScope = input_scope;
-    console.log("Enter name of the animal you want to visit.");
+    console.log("Enter name of the animal you want to visit.(Please surround name with qoutes)");
     prompt.get(["animal_name"], function(err, result){
-      connection.query("SELECT * FROM animals WHERE name =" +result.animal_name + ";");
+      var query = "SELECT * FROM animals WHERE name =" +result.animal_name + ";"
+      connection.query(query, function(err, result){
+        if (err) throw err;
+        console.log("Animal id: " + result[0].id + "\nAge: " + result[0].age);
+        currentScope.visit();
+      });
     });
-    currentScope.visit();
-    currentScope.view(currentScope);
   },
   all: function(input_scope){
     var currentScope = input_scope;
