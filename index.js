@@ -161,7 +161,6 @@ var zoo ={
   },
   promptUser: function(){
     var self = this;
-    debugger
     prompt.get("input", function(err, result){
       if (result.input === "Q"){
         self.exit();
