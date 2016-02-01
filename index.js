@@ -105,7 +105,7 @@ var zoo ={
       connection.query("SELECT * FROM animals WHERE id =" +result.animal_id + ";", function(err, result){
         if (err) throw err;
         //console.log("Animal Name: "+ result[0].name)
-        console.log("Animal Name: " + result[0].name + "\nAge: " + result[0].age);
+        console.log("Animal Name: " + result[0].name +  "\nType of Animal: " + result[0].type + "\nAge: " + result[0].age);
         currentScope.visit()
       });
     })
@@ -117,7 +117,7 @@ var zoo ={
       var query = "SELECT * FROM animals WHERE name =" +result.animal_name + ";"
       connection.query(query, function(err, result){
         if (err) throw err;
-        console.log("Animal id: " + result[0].id + "\nAge: " + result[0].age);
+        console.log("Animal id: " + result[0].id +  "\nType of Animal: " + result[0].type + "\nAge: " + result[0].age);
         currentScope.visit();
       });
     });
