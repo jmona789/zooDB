@@ -75,10 +75,15 @@ var zoo ={
   },
   type: function(input_scope){
     var currentScope = input_scope;
-    console.log("Enter animal type to find how many animals we have of those type.");
-    prompt.get(["->", "animal_type"], function(err, result){
-      connection.query("SELECT COUNT(type) AS AnimalsOfType FROM animals WHERE type="+result.type+";");
-      currentScope.visit();
+    console.log("Enter animal type to find how many animals we have of those type.(Please surround type with quotes)");
+    prompt.get(["animal_type"], function(err, result){
+      var animalType = result.animal_type;
+      animalType = animalType.substring(1, animalType.length-1);
+      connection.query("SELECT COUNT(type) AS AnimalsOfType FROM animals WHERE type=" + result.animal_type + ";", function(err, result){
+        if (err) throw err;
+        console.log("There are " + result[0].AnimalsOfType + " " + animalType + "(s) in the zoo");
+        currentScope.visit();
+      });
     });
   },
   care: function(input_scope){
@@ -112,7 +117,7 @@ var zoo ={
   },
   name: function(input_scope){
     var currentScope = input_scope;
-    console.log("Enter name of the animal you want to visit.(Please surround name with qoutes)");
+    console.log("Enter name of the animal you want to visit.(Please surround name with quotes)");
     prompt.get(["animal_name"], function(err, result){
       var query = "SELECT * FROM animals WHERE name =" +result.animal_name + ";"
       connection.query(query, function(err, result){
