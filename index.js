@@ -78,18 +78,23 @@ var zoo ={
     console.log("Enter animal type to find how many animals we have of those type.");
     prompt.get(["->", "animal_type"], function(err, result){
       connection.query("SELECT COUNT(type) AS AnimalsOfType FROM animals WHERE type="+result.type+";");
+      currentScope.visit();
     });
-    currentScope.menu();
-    currentScope.promptUser();
   },
   care: function(input_scope){
     var currentScope = input_scope;
     console.log("Enter city name NY/SF");
-    prompt.get(["->", "city_name"], function(err, result){
-      if (result.city_name === NY){
-        connection.query("");
-      }else{
-
+    prompt.get(["city_name"], function(err, result){
+      if (result.city_name === "NY"){
+        connection.query("SELECT COUNT(caretaker_id) AS countByCity FROM animals WHERE caretaker_id=1", function(err, result){
+          console.log("The total number of animals in that city is: " + result[0].countByCity);
+          currentScope.visit();
+        });
+      }else if(result.city_name === "SF"){
+        connection.query("SELECT COUNT(caretaker_id) AS countByCity FROM animals WHERE caretaker_id > 1 AND caretaker_id < 100", function(err, result){
+          console.log("The total number of animals in that city is: " + result[0].countByCity);
+          currentScope.visit();
+        })
       }
     })
   },
@@ -122,8 +127,7 @@ var zoo ={
     connection.query("SELECT COUNT(*) FROM animals;", function(err, result){
       if (err) throw err;
       console.log("There are " + result[0]["COUNT(*)"] + " animals in all locations.");
-      currentScope.menu();
-      currentScope.promptUser();
+      currentScope.visit();
     });
   },
   update: function(input_scope){
