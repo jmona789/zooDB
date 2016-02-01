@@ -119,9 +119,12 @@ var zoo ={
   },
   all: function(input_scope){
     var currentScope = input_scope;
-    connection.query("SELECT COUNT AS AllAnimals FROM animals;");
-    currentScope.menu();
-    currentScope.promptUser();
+    connection.query("SELECT COUNT(*) FROM animals;", function(err, result){
+      if (err) throw err;
+      console.log("There are " + result[0]["COUNT(*)"] + " animals in all locations.");
+      currentScope.menu();
+      currentScope.promptUser();
+    });
   },
   update: function(input_scope){
     var currentScope = input_scope;
