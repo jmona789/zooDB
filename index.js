@@ -172,6 +172,7 @@ var zoo ={
         self.update(self);
       }else{
         console.log("Sorry didn't get that, come again?")
+        self.promptUser();
       }
     });
   },
