@@ -151,10 +151,13 @@ var zoo ={
   adopt: function(input_scope){
     var currentScope = input_scope;
     prompt.get(["animal_id"], function(err, result){
-      connection.query("DELETE FROM animals WHERE id="+ result.animal_id +";");
+      connection.query("DELETE FROM animals WHERE id="+ result.animal_id +";", function(){
+        if (err) throw err;
+        console.log("Animal Successfully Adopted and Removed From Zoo!");
+        currentScope.menu();
+        currentScope.promptUser();
+      });
     });
-    currentScope.visit();
-    currentScope.view(currentScope);
   },
   promptUser: function(){
     var self = this;
